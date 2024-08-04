@@ -78,7 +78,7 @@ app.post("/preview", async (c) => {
 });
 
 /**
- * ✅ REQUIRED Cloudflare Workers export
+ * REQUIRED Cloudflare Workers export
  */
 export default {
   fetch: app.fetch
