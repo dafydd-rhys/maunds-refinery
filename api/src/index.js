@@ -3,6 +3,7 @@ import { processHTML } from "./process";
 import { runPipeline } from "./optimizer";
 import { validateRequest } from "./validator/request-schema";
 
+//api
 const app = new Hono();
 
 app.get("/", (c) => c.text("Maund API is running ✅"));
