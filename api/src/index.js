@@ -8,6 +8,7 @@ const app = new Hono();
 
 app.get("/", (c) => c.text("Maund API is running ✅"));
 
+//main processing endpoint
 app.post("/process", async (c) => {
   let body;
 
