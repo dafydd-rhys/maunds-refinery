@@ -54,6 +54,7 @@ app.post("/process", async (c) => {
   });
 });
 
+//preview
 app.post("/preview", async (c) => {
   const { html, mode, options, pipeline } = await c.req.json();
 
