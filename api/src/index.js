@@ -35,7 +35,7 @@ app.post("/process", async (c) => {
     });
   }
 
-  // ✅ Legacy mode-based execution
+  //Legacy mode-based execution
   const result = await processHTML(html, mode, options);
 
   if (mode === "optimize" && typeof result === "object") {
