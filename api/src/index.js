@@ -25,7 +25,7 @@ app.post("/process", async (c) => {
 
   const { html, mode, options, pipeline } = body;
 
-  // ✅ Pipeline-based execution
+  // Pipeline-based execution
   if (pipeline) {
     const result = await runPipeline(html, pipeline);
     return c.json({
