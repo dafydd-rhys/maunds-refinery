@@ -4,6 +4,49 @@ An API-first HTML refinery that **cleans**, **prettifies**, **condenses**, and *
 
 The optimizer makes the **exact same visual output** but reduces character count and improves readability. All transformations are lossless — semantic and visual equivalence is guaranteed.
 
+Example Test: returned HTML visually is identical and easier to read
+```
+Input HTML characters: 88,670
+Request JSON bytes: 93,523
+Pipeline: clean -> optimize -> condense -> prettify
+
+optimize: 
+  optimizeInlineStyles: true,
+  optimizeStyleBlocks: true,
+  removeEmptyAttrs: true,
+  extractInlineStyles: args.extractInlineStyles,
+  minifyCss: true,
+  mergeAdjacentTags: args.mergeAdjacentTags,
+  hoistSharedClasses: args.hoistSharedClasses,
+  unwrapSoleSpans: args.unwrapSoleSpans,
+      
+condense: 
+  collapseWhitespace: true,
+  removeComments: true,
+  removeEmptyAttributes: true,
+  removeRedundantAttributes: true,
+  removeOptionalTags: false,
+  collapseBooleanAttributes: true,
+
+prettify: 
+  indentSize: args.indentSize,
+  indentChar: " ",
+  maxPreserveNewlines: 1,
+  endWithNewline: true,
+  inlineShortContent: args.inlineShortContent,
+  inlineMaxLength: args.inlineMaxLength,
+  inlineLongText: args.inlineLongText,
+  collapseConsecutiveBr: args.collapseConsecutiveBr,
+  
+POST http://localhost:3000/v1/refine
+Status: 200 OK
+Saved response: path/to/X
+Saved refined HTML: path/to/Y
+Output HTML characters: 78,668
+Character reduction: 11.28%
+Line reduction: 985 -> 638 (35.23%)
+```
+
 ## What's different about v2
 
 Built from scratch. No third-party CSS optimizers, no `html-minifier`, no `js-beautify`. Three external libraries are used **only for parsing**:
