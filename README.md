@@ -1,4 +1,4 @@
-# Maunds Refinery API v2
+# Maunds Refinery API
 
 An API-first HTML refinery that **cleans**, **prettifies**, **condenses**, and **optimizes** HTML markup with deep CSS intelligence.
 
