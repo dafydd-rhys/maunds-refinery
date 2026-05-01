@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en" data-theme="cyberpunk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>:: maunds refinery / playground ::</title>
+
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="./index.js" defer></script>
+  </head>
+
+  <body>
+    <!-- ============================== HEADER ============================== -->
+    <div class="header">
+      <pre
+        class="ascii"
+      >╔═══════════════════════════════════════════════════════╗
+║   <span style="color:var(--accent-2);">M A U N D S</span>  ::  <span style="color:var(--accent-3);">R E F I N E R Y</span>  ::  v1     ║
+║   <span class="sub">▓▓▓▓░░░░░░░░  HTML deconstructor 9000  · playground</span>   ║
+╚═══════════════════════════════════════════════════════╝</pre>
+      <div class="theme-switcher">
+        <button data-theme-set="cyberpunk" class="active">cyberpunk</button>
+        <button data-theme-set="vaporwave">vaporwave</button>
+        <button data-theme-set="matrix">matrix</button>
+      </div>
+    </div>
+
+    <!-- ============================== MAIN ============================== -->
+    <div class="main">
+      <!-- ============================== EDITOR ============================== -->
+      <div class="editor">
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-tab="input">▸ input</button>
+          <button class="tab" data-tab="preview-in">preview.in</button>
+          <button class="tab" data-tab="output">
+            output <span class="badge" id="outputBadge">—</span>
+          </button>
+          <button class="tab" data-tab="preview-out">preview.out</button>
+          <button class="tab" data-tab="css">
+            classes <span class="badge" id="cssBadge">—</span>
+          </button>
+          <button class="tab" data-tab="json">api.json</button>
+        </div>
+
+        <div class="cli-bar">
+          <span class="prompt">$</span>
+          <span class="cmd" id="cliCmd">node refine.js test.html</span>
+          <button class="copy-btn" id="copyCli">copy</button>
+        </div>
+
+        <div class="error-banner" id="errorBanner"></div>
+
+        <div class="code-area">
+          <textarea
+            id="inputArea"
+            placeholder="// paste html here..."
+          ></textarea>
+
+          <div class="preview-pane" id="previewInPane" style="display: none">
+            <iframe
+              id="previewInFrame"
+              sandbox="allow-same-origin"
+              referrerpolicy="no-referrer"
+            ></iframe>
+          </div>
+
+          <pre id="outputArea" style="display: none"></pre>
+
+          <div class="preview-pane" id="previewOutPane" style="display: none">
+            <div class="preview-empty" id="previewOutEmpty">
+              // run refine to populate this preview
+            </div>
+            <iframe
+              id="previewOutFrame"
+              sandbox="allow-same-origin"
+              referrerpolicy="no-referrer"
+              style="display: none"
+            ></iframe>
+          </div>
+
+          <div id="cssArea" class="classlist" style="display: none"></div>
+          <pre id="jsonArea" style="display: none"></pre>
+        </div>
+
+        <div class="run-bar">
+          <div class="size-bar">
+            <div class="bar-row">
+              <span class="bar-label">chars</span>
+              <div class="bar-track" id="barTrack" title="char comparison">
+                <div class="bar-before" id="barBefore">— bytes</div>
+                <div class="bar-after" id="barAfter" style="width: 0"></div>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <span class="bar-label">lines</span>
+              <div class="bar-track" id="lineBarTrack" title="line comparison">
+                <div class="bar-before" id="lineBarBefore">— lines</div>
+                <div class="bar-after" id="lineBarAfter" style="width: 0"></div>
+              </div>
+            </div>
+
+            <div class="bar-stats">
+              <span id="statIn">in: 0 ch / 0 lines</span>
+              <span id="statOut">out: — / —</span>
+              <span id="statReduction" class="ok">char red: —</span>
+              <span id="statLineReduction" class="ok">line red: —</span>
+              <span id="statTime">time: —</span>
+            </div>
+          </div>
+          <button class="run-btn" id="runBtn">►► refine ◄◄</button>
+        </div>
+      </div>
+
+      <!-- ============================== FLAG PAD ============================== -->
+      <div class="flagpad">
+        <div class="flagpad-header">
+          <span>─── flag.pad ───</span>
+          <button
+            class="reset-btn"
+            id="resetBtn"
+            title="restore all options to defaults"
+          >
+            ↺ reset
+          </button>
+        </div>
+
+        <div class="flagpad-body" id="flagpad">
+          <!-- presets injected here -->
+          <div class="presets" id="presetsBar">
+            <div class="flag-section preset-section">
+              <div class="flag-section-title">default presets</div>
+              <div class="flag-section-content">
+                <div class="presets-buttons">
+                  <button
+                    class="preset-btn safe"
+                    data-preset="safe"
+                    title="formatting only — no structural changes, no class extraction"
+                  >
+                    safe
+                  </button>
+
+                  <button
+                    class="preset-btn recommended"
+                    data-preset="recommended"
+                    title="balanced defaults — extract styles, merge tags, hoist classes"
+                  >
+                    recommended
+                  </button>
+
+                  <button
+                    class="preset-btn dangerous"
+                    data-preset="dangerous"
+                    title="maximum aggression — strips nbsp, removes empty paragraphs, all cleanup on"
+                  >
+                    dangerous
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flag-section preset-section">
+              <div class="flag-section-title">custom presets</div>
+              <div class="flag-section-content">
+                <div class="presets-buttons">
+                  <button
+                    class="preset-btn one-line"
+                    data-preset="oneLine"
+                    title="single-line output — clean, optimize, condense, no prettify"
+                  >
+                    one-line
+                  </button>
+
+                  <button
+                    class="preset-btn class-demo"
+                    data-preset="classDemo"
+                    title="best for demonstrating inline style extraction and class hoisting"
+                  >
+                    class-demo
+                  </button>
+
+                  <button
+                    class="preset-btn email-safe"
+                    data-preset="emailSafe"
+                    title="keeps inline styles for email-client compatibility"
+                  >
+                    email-safe
+                  </button>
+
+                  <button
+                    class="preset-btn word-clean"
+                    data-preset="wordClean"
+                    title="cleanup preset for Word/PDF-exported HTML"
+                  >
+                    word-clean
+                  </button>
+
+                  <button
+                    class="preset-btn readable"
+                    data-preset="readable"
+                    title="human-readable optimized output"
+                  >
+                    readable
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- flag sections injected by JS -->
+        </div>
+
+        <div
+          class="run-bar"
+          style="border-top: 1px solid var(--border); padding: 10px 14px"
+        >
+          <button
+            class="run-btn"
+            id="downloadBtn"
+            style="
+              font-size: 10px;
+              padding: 6px 10px;
+              letter-spacing: 1px;
+              flex: 1;
+              background: transparent;
+              color: var(--accent);
+              border: 1px solid var(--border-faint);
+            "
+          >
+            ▼ download.html
+          </button>
+          <button
+            class="run-btn"
+            id="copyBtn"
+            style="
+              font-size: 10px;
+              padding: 6px 10px;
+              letter-spacing: 1px;
+              flex: 1;
+              background: transparent;
+              color: var(--accent-2);
+              border: 1px solid var(--border-faint);
+            "
+          >
+            ⧉ copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================== STATUS ============================== -->
+    <div class="status">
+      <div class="group">
+        <span class="pulse" id="connStatus">connected</span>
+        <span id="endpointStatus">→ /v1/refine</span>
+      </div>
+      <div class="group">
+        <span id="lastRunStatus">no runs yet</span>
+        <span style="color: var(--dimmer)">esc to close</span>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </body>
+</html>

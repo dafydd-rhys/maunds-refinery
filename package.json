@@ -1,0 +1,17 @@
+{
+  "name": "maunds-refinery",
+  "version": "2.0.0",
+  "description": "API-first HTML refinery",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "css-tree": "^3.2.1",
+    "express": "^5.2.1",
+    "parse5": "^8.0.1"
+  }
+}
