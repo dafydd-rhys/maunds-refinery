@@ -1,20 +1,52 @@
 {
   "name": "maunds-refinery",
-  "version": "2.0.0",
-  "description": "API-first HTML refinery",
-  "main": "src/index.js",
+  "version": "1.0.0",
+  "description": "HTML and CSS cleaning, formatting, condensing, and optimization utilities.",
   "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./routes": "./src/routes/index.js"
+  },
+  "files": [
+    "src/index.js",
+    "src/engine",
+    "src/routes",
+    "src/middleware",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=20.19.0 <25"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "pack:check": "npm pack --dry-run"
   },
   "license": "MIT",
   "dependencies": {
     "css-tree": "^3.2.1",
-    "express": "^5.2.1",
     "parse5": "^8.0.1"
-  }
+  },
+  "peerDependencies": {
+    "express": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "express": "^5.2.1"
+  },
+  "keywords": [
+    "html",
+    "css",
+    "cleaner",
+    "formatter",
+    "optimizer",
+    "minifier",
+    "refinery"
+  ]
 }

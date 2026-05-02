@@ -113,7 +113,7 @@ optimizeRouter.post("/", (req, res) => {
 // ---------------------------------------------------------------------------
 export const optimizeCssRouter = Router();
 optimizeCssRouter.post("/", (req, res) => {
-  const { css, options = {} } = req.body;
+  const { css, options = {} } = req.body || {};
   if (!css || typeof css !== "string") {
     return res.status(400).json({
       error: { code: "MISSING_CSS", message: "No css string provided" },

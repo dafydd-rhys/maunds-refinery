@@ -1,72 +1,45 @@
-import express from "express";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import {
-  cleanRouter,
-  prettifyRouter,
-  condenseRouter,
-  optimizeRouter,
-  refineRouter,
-} from "./routes/index.js";
-import { errorHandler } from "./middleware/errorHandler.js";
-import { validateHtml } from "./middleware/validateHtml.js";
+export { cleanHtml } from "./engine/html/clean.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export {
+  prettifyHtml,
+  DEFAULT_PRETTIFY_OPTIONS,
+} from "./engine/html/prettify.js";
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+export {
+  condenseHtml,
+  DEFAULT_CONDENSE_OPTIONS,
+} from "./engine/html/condense.js";
 
-// Larger limit for big HTML inputs (Word/Pages exports can be hefty)
-app.use(express.json({ limit: "25mb" }));
+export { transformHtml } from "./engine/html/transform.js";
 
-// CORS: allow the playground (and any local frontend) to call the API
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Accept, Authorization",
-  );
-  if (req.method === "OPTIONS") return res.sendStatus(204);
-  next();
-});
+export {
+  transformCss,
+  parseDeclarations,
+  serializeDeclarations,
+  parseStylesheet,
+  optimizeDeclarations,
+  transformInlineStyle,
+} from "./engine/css/transform.js";
 
-app.use((req, _res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  next();
-});
+export { createDescriptiveNameGenerator } from "./engine/html/classnames.js";
 
-app.use("/v1/clean", validateHtml, cleanRouter);
-app.use("/v1/prettify", validateHtml, prettifyRouter);
-app.use("/v1/condense", validateHtml, condenseRouter);
+export {
+  normalizeColor,
+  normalizeValue,
+  parseImportant,
+} from "./engine/css/normalize.js";
 
-// /v1/optimize/css skips validateHtml (no html field expected)
-// /v1/optimize requires html — both handled inside optimizeRouter
-app.use("/v1/optimize", (req, res, next) => {
-  if (req.path === "/css") return optimizeRouter.handle(req, res, next);
-  validateHtml(req, res, () => optimizeRouter.handle(req, res, next));
-});
+export { mergeShorthands } from "./engine/css/shorthands.js";
 
-app.use("/v1/refine", validateHtml, refineRouter);
+export { removeDeadDeclarations } from "./engine/css/dead-code.js";
 
-app.get("/health", (_req, res) => res.json({ status: "ok", version: "2.0.0" }));
-
-// Serve the playground frontend at /playground
-// Path: <project root>/playground/index.html (sibling of src/)
-const playgroundDir = path.resolve(__dirname, "..", "playground");
-app.use("/playground", express.static(playgroundDir));
-app.get("/", (_req, res) => res.redirect("/playground"));
-
-app.use((_req, res) =>
-  res
-    .status(404)
-    .json({ error: { code: "NOT_FOUND", message: "Endpoint not found" } }),
-);
-app.use(errorHandler);
-
-app.listen(PORT, () => {
-  console.log(`Maunds Refinery v2 running on :${PORT}`);
-  console.log(`  API:        http://localhost:${PORT}/v1/refine`);
-  console.log(`  Playground: http://localhost:${PORT}/playground`);
-});
-export default app;
+export {
+  mergeAdjacentInlineTags,
+  hoistSharedClasses,
+  stripTrailingNbsp,
+  removeEmptyParagraphs,
+  removeCellspacing,
+  mergeAdjacentLists,
+  unwrapSoleInlineChildren,
+  buildClassPropertyMap,
+} from "./engine/html/structural.js";

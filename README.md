@@ -1142,3 +1142,10 @@ When adding new transforms:
 ## Project Summary
 
 Maunds Refinery is best understood as a structured HTML cleanup and optimization pipeline. Its strongest use case is reducing noisy generated markup while retaining readable, inspectable output. The system is modular enough to support conservative formatting, aggressive minification, or a balanced workflow that extracts repeated inline styles into classes and then prettifies the result for review.
+
+##MIT License
+
+Copyright (c) 2026 Dafydd-Rhys
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files...

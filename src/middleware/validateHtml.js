@@ -1,5 +1,5 @@
 export function validateHtml(req, res, next) {
-  const { html } = req.body;
+  const { html } = req.body || {};
   if (html === undefined || html === null) {
     return res
       .status(400)
