@@ -7,6 +7,11 @@ The project is designed for HTML produced by editors, converters, document tools
 > **Important:** Maunds Refinery is an optimizer and formatter, not a security sanitizer. Do not use its output as proof that user-supplied HTML is safe to render in a privileged context.
 
 **Demo:** https://maunds-refinery.com/playground/
+**npm package:** https://www.npmjs.com/package/maunds-refinery
+
+```
+npm i maunds-refinery
+```
 
 ---
 
